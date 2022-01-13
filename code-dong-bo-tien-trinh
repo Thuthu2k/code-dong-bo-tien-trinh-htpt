@@ -1,0 +1,71 @@
+
+package fillter;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Date;
+import java.util.List;
+
+public class OnTap {
+	
+	
+	public static void main(String[] args) throws ParseException {
+		
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
+		
+		String[] ip = {
+				"2021-06-30 01:03:53.520",
+				"2021-06-30 01:02:50.750",
+				"2021-06-30 01:05:53.540",
+				"2021-06-30 01:01:50.770",
+				"2021-06-30 01:03:53.550",
+				"2021-06-30 01:02:50.720",
+				"2021-06-30 01:04:53.500",
+				"2021-06-30 01:01:50.710",
+				"2021-06-30 01:03:53.580",
+				"2021-06-30 01:02:50.690",
+				"2021-06-30 01:03:53.490",
+				"2021-06-30 01:01:50.680",
+				"2021-06-30 01:03:53.610",
+		};
+		
+		List<Long> listDateLong = convert(ip);
+		
+		for(Long i : listDateLong) {
+			
+			List<Long> list = new ArrayList<Long>(listDateLong);
+			list.remove(i);
+			Collections.sort(list);
+			list.remove(0);
+			list.remove(list.size()-1);
+			long tong = 0; 
+			long trungBinh = 0;
+			for(Long j : list) {
+				tong+=j;
+			}
+			trungBinh = tong / (listDateLong.size()-3);
+			
+			Date result = new Date(trungBinh);
+			String rl = sdf.format(result);
+			
+			System.out.println(rl);
+				
+		}
+			
+	}
+	
+	public static List<Long> convert(String[] input) throws ParseException{
+		
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
+		List<Long> listMiliSeconds = new ArrayList<Long>();
+		for(String s : input) {
+			Date d = sdf.parse(s);
+			long miliseconds = d.getTime();
+			listMiliSeconds.add(miliseconds);
+		}
+		return listMiliSeconds;
+	}
+	
+}
